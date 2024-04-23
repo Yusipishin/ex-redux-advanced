@@ -1,10 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
+import {useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "./hooks/redux";
+import {userSlice} from "./store/reducers/UserSlice";
+import {fetchUsers} from "./store/reducers/ActionCreators";
 
 function App() {
-  return (
+    const dispatch = useAppDispatch()
+    const {users, isLoading, error} = useAppSelector(state => state.userReducer)
+
+    useEffect(() => {
+        dispatch(fetchUsers())
+    }, [])
+
+    return (
     <div className="App">
-      wfwf
+        {isLoading && <h1>Идёт загрузка...</h1>}
+        {error && <h1>{error}</h1>}
+        {JSON.stringify(users, null, 2)}
     </div>
   );
 }
