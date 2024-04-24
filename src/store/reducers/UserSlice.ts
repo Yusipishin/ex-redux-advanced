@@ -31,6 +31,7 @@ export const userSlice = createSlice({
             })
             .addCase(fetchUsers.rejected, (state,  action) => {
                 state.isLoading = false;
+                // @ts-ignore
                 state.error = action.payload
             })
     }
