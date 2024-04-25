@@ -4,8 +4,9 @@ import {IPost} from "../models/IPost";
 export const postAPI = createApi({
     reducerPath: 'postAPI', // уникальный ключ
     baseQuery: fetchBaseQuery({
-        baseUrl: ' http://localhost:5000'
+        baseUrl: 'http://localhost:5000'
     }),
+    tagTypes: ['Post'],
     endpoints: (build) => ({
         fetchAllPosts: build.query<IPost[], number>({
             query: (limit = 5) => ({
@@ -13,7 +14,16 @@ export const postAPI = createApi({
                 params: {
                     _limit: limit
                 }
-            })
-        })
+            }),
+            providesTags: result => ['Post']
+        }),
+        createPost: build.mutation<IPost, IPost>({
+            query: (post) => ({
+                url: '/posts',
+                method: 'POST',
+                body: post
+            }),
+            invalidatesTags: ['Post']
+        }),
     })
 })
